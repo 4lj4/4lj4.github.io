@@ -44,7 +44,7 @@ def generate_html(sample_path, info_file, zip_file, analysis_guide):
         <p><strong>C2 Status:</strong> {sample_info.get('C2 Status', 'N/A')}</p>
         <p><strong>SHA256:</strong> {sample_info.get('SHA256', 'N/A')}</p>
         <a href="{zip_file}" download>Download Sample (Encrypted zip, pass:infected)</a>
-        <a href="{analysis_guide}" download>View analysis guide</a>
+        <a href="{analysis_guide}">View analysis guide</a>
     </div>
     """
 
