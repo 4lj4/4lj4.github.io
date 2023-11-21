@@ -1,5 +1,7 @@
-Author:Webhook used for this file appears to be created by @zade1x on discord (UID 1130510361536241664)
-Date:21Nov2023
-Notes:Terrible skidware stealer, pyinstaller mess with weak obfuscation
+Date:21st November 2023
+Description:Terrible skidware stealer, pyinstaller mess with weak obfuscation. Just the absolute definition of crap python malware.
+Author:@zade1x on discord (UID 1130510361536241664) is the account named on the webhook extracted from the executable
+Original source: https://github.com/Blank-c/BlankOBF
 C2 Status:Dead, webhook deleted
 SHA256:4f619b404bac1741a88d50d7326ef8d1346c4494e2a88f5ef6c63835363f6be5
+Tags: zade1x, zade bot, zade, 1130510361536241664, python, stealer, blank-stealer, blank-c, blankOBF, pyinstaller, pyc,

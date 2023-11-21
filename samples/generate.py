@@ -52,18 +52,11 @@ def generate_html(sample_path, info_file, zip_file, analysis_guide):
     sample_info = parse_info_file(info_file)
 
     # Generate HTML for each sample
-    html_content = f"""
-    <div>
-        <h2>{os.path.basename(sample_path)}</h2>
-        <p><strong>Author:</strong> {sample_info.get('Author', 'N/A')}</p>
-        <p><strong>Date:</strong> {sample_info.get('Date', 'N/A')}</p>
-        <p><strong>Notes:</strong> {sample_info.get('Notes', 'N/A')}</p>
-        <p><strong>C2 Status:</strong> {sample_info.get('C2 Status', 'N/A')}</p>
-        <p><strong>SHA256:</strong> {sample_info.get('SHA256', 'N/A')}</p>
-        <a href="{zip_file}" download>Download Sample Zip</a>
-        <a href="{analysis_guide}">View Analysis Guide</a>
-    </div>
-    """
+    html_content = f"<div><h2>{os.path.basename(sample_path)}</h2>"
+    for key, value in sample_info.items():
+        html_content += f"<p><strong>{key}:</strong> {value}</p>"
+    html_content += f"""<a href="{zip_file}" download>Download Sample Zip</a>
+                        <a href="{analysis_guide}">View Analysis Guide</a></div>"""
 
     return html_content
 
@@ -117,6 +110,7 @@ def generate_index_html():
     <h1>Malicious software samples found in the wild</h1>
     <h2>DO NOT DOWNLOAD IF YOU DO NOT KNOW EXACTLY WHAT YOURE DOING</h2>
     <h3>All zip files are encrypted with the password "infected" to prevent accidental execution</h3>
+    <p>This site provides downloads and analysis writeups for the silly little bits of malware I have reverse engineered for fun. None of the files here have any value outside of being fun to investigate. I will also be naming and shaming the skids distributing this malware where possible :)</p>
     """)
 
         # Iterate through each sample in the "files" folder
