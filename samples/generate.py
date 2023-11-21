@@ -19,6 +19,23 @@ def convert_markdown_to_html(md_file_path):
             'task_list',           # Task list items
         ]
     )
+    html_content += """
+    <style>
+        pre {
+            background-color: #333;
+            color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            overflow: auto;
+        }
+
+        code {
+            color: inherit;
+            background-color: inherit;
+            padding: 0;
+        }
+    </style>
+    """
     output_html_path = os.path.splitext(md_file_path)[0] + ".html"
     with open(output_html_path, 'w', encoding='utf-8') as html_file:
         html_file.write(html_content)
