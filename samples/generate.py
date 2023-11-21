@@ -43,8 +43,8 @@ def generate_html(sample_path, info_file, zip_file, analysis_guide):
         <p><strong>Notes:</strong> {sample_info.get('Notes', 'N/A')}</p>
         <p><strong>C2 Status:</strong> {sample_info.get('C2 Status', 'N/A')}</p>
         <p><strong>SHA256:</strong> {sample_info.get('SHA256', 'N/A')}</p>
-        <a href="{zip_file}" download>Download Sample (Encrypted zip, pass:infected)</a>
-        <a href="{analysis_guide}">View analysis guide</a>
+        <a href="{zip_file}" download>Download Sample Zip</a>
+        <a href="{analysis_guide}">View Analysis Guide</a>
     </div>
     """
 
@@ -99,6 +99,7 @@ def generate_index_html():
 <body>
     <h1>Malicious software samples found in the wild</h1>
     <h2>DO NOT DOWNLOAD IF YOU DO NOT KNOW EXACTLY WHAT YOURE DOING</h2>
+    <h3>All zip files are encrypted with the password "infected" to prevent accidental execution</h3>
     """)
 
         # Iterate through each sample in the "files" folder
