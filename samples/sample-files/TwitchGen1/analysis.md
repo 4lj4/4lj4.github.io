@@ -17,7 +17,7 @@ Run pyinstxtractor on the TwitchGen.exe file.
 This will create a folder containing a variety of files.
 The files important to us are:
 - blank.aes : The encrypted payload
-- <really_messed_up_filename>.pyc : The code which decrypts the blank.aes payload
+- (really_messed_up_filename).pyc : The code which decrypts the blank.aes payload
 Note: I will refer to the decrypter pyc file as "decrypter.pyc" from this point onwards
 
 
