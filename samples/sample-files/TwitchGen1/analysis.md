@@ -139,8 +139,7 @@ with open("datablob.decompressed.blankOBF.py", 'wb') as f:
 
 This results in another obfuscated python file for us to play with
 
-# Stage 4: Deobfuscating blankOBF obfuscated code, dumping malware source disassembly
-## Deobfuscation
+# Stage 4: Deobfuscating blankOBF obfuscated code
 The skid was kind enough to leave a comment in this file that states what was used to obfuscate it
 ```python
 # Obfuscated using https://github.com/Blank-c/BlankOBF
@@ -163,7 +162,7 @@ __import__("builtins").exec(
     )
 )
 ```
-## Dumping source disassembly
+# Stage 5: dumping malware source disassembly
 The deobfuscated file can then easily be modified so that instead of executing the loaded code, it is disassembled and written to a file
 ```python
 dataBlob1 = # ...
@@ -190,7 +189,7 @@ loadedCode = marshal.loads(dataBlobDecoded)
 disassemble_and_save(loadedCode, "datablob.decompressed.deblankOBFuscated.disassembled.txt")
 ```
 
-# Stage 5: Extracting useful data (discord webhook)
+# Stage 6: Extracting useful data (discord webhook)
 At this point, it is possible to gather all kinds of interesting information about the malware.
 Unsurprisingly, by searching various strings that appear in the disassembled code it can be found that this file is all over github, copypasted by skids.
 From this, its possible to see the original source code and see that this is in fact a skiddy stealer.
@@ -217,7 +216,7 @@ Disassembly of <code object Settings at 0x55e16cf9ffe0, file "<string>", line 27
              80 STORE_NAME               6 (C2)
 ```
 
-# Stage 6: Troll the discord webhook
+# Stage 7: Troll the discord webhook
 If the webhook is active, you can get the username/userID of the skid operating this malware.
 I found the following user information:
 - id: 1130510361536241664

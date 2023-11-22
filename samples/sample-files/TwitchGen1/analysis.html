@@ -163,9 +163,7 @@ Here is a section of the file when I deobfuscated it (including my own code that
 
 <p>This results in another obfuscated python file for us to play with</p>
 
-<h1 id="stage-4-deobfuscating-blankobf-obfuscated-code-dumping-malware-source-disassembly">Stage 4: Deobfuscating blankOBF obfuscated code, dumping malware source disassembly</h1>
-
-<h2 id="deobfuscation">Deobfuscation</h2>
+<h1 id="stage-4-deobfuscating-blankobf-obfuscated-code">Stage 4: Deobfuscating blankOBF obfuscated code</h1>
 
 <p>The skid was kind enough to leave a comment in this file that states what was used to obfuscate it</p>
 
@@ -195,7 +193,7 @@ You should end up with deobfuscated code that looks like this:</p>
 </code></pre>
 </div>
 
-<h2 id="dumping-source-disassembly">Dumping source disassembly</h2>
+<h1 id="stage-5-dumping-malware-source-disassembly">Stage 5: dumping malware source disassembly</h1>
 
 <p>The deobfuscated file can then easily be modified so that instead of executing the loaded code, it is disassembled and written to a file</p>
 
@@ -225,7 +223,7 @@ You should end up with deobfuscated code that looks like this:</p>
 </code></pre>
 </div>
 
-<h1 id="stage-5-extracting-useful-data-discord-webhook">Stage 5: Extracting useful data (discord webhook)</h1>
+<h1 id="stage-6-extracting-useful-data-discord-webhook">Stage 6: Extracting useful data (discord webhook)</h1>
 
 <p>At this point, it is possible to gather all kinds of interesting information about the malware.
 Unsurprisingly, by searching various strings that appear in the disassembled code it can be found that this file is all over github, copypasted by skids.
@@ -253,7 +251,7 @@ The juicy information for us is the discord webhook used to extract stolen data.
              80 STORE_NAME               6 (C2)
 </code></pre>
 
-<h1 id="stage-6-troll-the-discord-webhook">Stage 6: Troll the discord webhook</h1>
+<h1 id="stage-7-troll-the-discord-webhook">Stage 7: Troll the discord webhook</h1>
 
 <p>If the webhook is active, you can get the username/userID of the skid operating this malware.
 I found the following user information:</p>
