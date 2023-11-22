@@ -1,7 +1,7 @@
 Date:21st November 2023
-Description:Terrible skidware stealer, pyinstaller mess with weak obfuscation. Just the absolute definition of crap python malware.
+Description:Terrible skidded pyinstalled stealer mess with weak obfuscation. Some of the worst of the worst.
 Author:@zade1x on discord (UID 1130510361536241664) is the account named on the webhook extracted from the executable
-Original source: https://github.com/Blank-c/BlankOBF
-C2 Status:Dead, webhook deleted
+Original source: https://github.com/Blank-c/Blank-Grabber
+C2 Status:Webhook deleted
 SHA256:4f619b404bac1741a88d50d7326ef8d1346c4494e2a88f5ef6c63835363f6be5
-Tags: zade1x, zade bot, zade, 1130510361536241664, python, stealer, grabber, blank-grabber, blank-c, blankOBF, pyinstaller, pyc,
+Tags: zade1x, zade bot, zade, 1130510361536241664, python, stealer, grabber, blank-grabber, blank-c, blank-OBF, pyinstaller, pyc, pycdc, pycdas, pylingual,

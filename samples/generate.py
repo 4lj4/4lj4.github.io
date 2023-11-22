@@ -95,22 +95,22 @@ def generate_index_html():
             display: inline-block;
             padding: 10px;
             margin-top: 10px;
-            background-color: #4285f4;
+            background-color: #2f043b;
             color: #fff;
             text-decoration: none;
             border-radius: 5px;
         }
 
         a:hover {
-            background-color: #3367d6;
+            background-color: #16021c;
         }
     </style>
 </head>
 <body>
     <h1>Malicious software samples found in the wild</h1>
-    <h2>DO NOT DOWNLOAD IF YOU DO NOT KNOW EXACTLY WHAT YOURE DOING</h2>
+    <h2 style="color: red">Do not download these if you do not know what you are doing</h2>
+    <p>This site provides downloads and analysis writeups for the silly little bits of malware I have reverse engineered for fun. There's nothing crazy here but maybe you can use the samples and writeups here to learn a little bit about reverse engineering :)</p>
     <h3>All zip files are encrypted with the password "infected" to prevent accidental execution</h3>
-    <p>This site provides downloads and analysis writeups for the silly little bits of malware I have reverse engineered for fun. None of the files here have any value outside of being fun to investigate. I will also be naming and shaming the skids distributing this malware where possible :)</p>
     """)
 
         # Iterate through each sample in the "files" folder
