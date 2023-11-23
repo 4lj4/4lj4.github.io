@@ -1,5 +1,5 @@
 Date:23rd November 2023
-Description:Skid malware distributed via discord as a "free hacking tool". Appears to be crypto miner
+Description:Skid malware distributed via discord as a "free hacking tool". Appears to contain stealer + crypto miner. The kid distributing this has like 7 discord servers that he bumps on disboard, each server then has download links for several fake hacking tools. This is his most recent "tool" which actually had a valid webhook when I got my hands on it, unlike the others.
 Author:@._postal_. on discord (UID 1145768703753994311) is the account named on the webhook extracted from the stealer
 Original source:https://github.com/Ayhuuu/Creal-Stealer
 C2 Status:Stealer webhook is currently live
