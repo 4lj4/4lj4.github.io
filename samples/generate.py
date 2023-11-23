@@ -55,7 +55,7 @@ def generate_html(sample_path, info_file, zip_file, analysis_guide):
     html_content = f"<div><h2>{os.path.basename(sample_path)}</h2>"
     for key, value in sample_info.items():
         html_content += f"<p><strong>{key}:</strong> {value}</p>"
-    html_content += f"""<a href="{zip_file}" download>Download Sample Zip</a>
+    html_content += f"""<a href="https://github.com/4lj4/4lj4.github.io/tree/main/samples/{zip_file}" download>Download Sample Zip</a>
                         <a href="{analysis_guide}">View Analysis Guide</a></div>"""
 
     return html_content
