@@ -1,4 +1,52 @@
-<h1 id="todo">TODO</h1>
+<h1 id="a-guide-to-unpacking-kingphisherzip">A guide to unpacking &#8220;KingPhisher.zip&#8221;</h1>
+
+<ul>
+<li>SHA256: </li>
+<li>VT Link: </li>
+<li>Sample download: https://github.com/4lj4/4lj4.github.io/blob/main/samples/sample-files/KingPhisher/KingPhisher.zip</li>
+</ul>
+
+<p>I will make this document a bit nicer later, this is just the basics</p>
+
+<h1 id="required-tools">Required tools:</h1>
+
+<ul>
+<li>Python</li>
+<li>Pyinstxtractor https://github.com/extremecoders-re/pyinstxtractor</li>
+<li>Pycdc https://github.com/zrax/pycdc</li>
+<li>Windows virtual machine</li>
+<li>x64dbg</li>
+<li>Ghidra</li>
+</ul>
+
+<h1 id="stage-1-identifying-usage-of-shellexecutea">Stage 1: Identifying usage of ShellExecuteA</h1>
+
+<p>Using ghidra, you can decompile the executable and you will find that it has very few imports, one of those being ShellExecuteA.
+This is a clear indication that this function is being used for executing some next stage of infection</p>
+
+<h1 id="stage-2-grabbing-dropped-files-from-temp-using-x64dbg">Stage 2: Grabbing dropped files from temp using x64dbg</h1>
+
+<ul>
+<li>Load up a VM with the malware sample and x64dbg.</li>
+<li>Open the imports tab and go to shell32 =&gt; ShellExecuteA and toggle its breakpoint.</li>
+<li>You can now run the code, and at each breakpoint on the stack you will be able to see the path of files it has dropped/is about to execute
+The program drops 3 files:</li>
+<li>actions.exe (pyinstalled Creal grabber)</li>
+<li>update.exe (some crypto miner - needs more investigation)</li>
+<li>kingphisher msi installer
+You can copy these files out of temp and analyse them further</li>
+</ul>
+
+<h1 id="stage-3-extracting-webhook-from-actionsexe">Stage 3: Extracting webhook from actions.exe</h1>
+
+<p>Run Pyinstxtractor on actions.exe to dump the pyc files, then run pycdc on Creal.pyc.
+This will print the webhook straight onto your screen!</p>
+
+<h1 id="stage-4-troll-the-webhook">Stage 4: Troll the webhook</h1>
+
+<p>:)</p>
+
+<p>The webhook is still active as of 23rd Nov 2023 14:21 GMT</p>
 
     <style>
         pre {

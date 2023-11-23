@@ -2,7 +2,7 @@
 - MD5: ffda245ac141114c9edbb3e6bb24ef4c
 - SHA256: 4f619b404bac1741a88d50d7326ef8d1346c4494e2a88f5ef6c63835363f6be5
 - VT Link: https://www.virustotal.com/gui/file/4f619b404bac1741a88d50d7326ef8d1346c4494e2a88f5ef6c63835363f6be5
-- Sample download: https://www.lj4.uk/samples/sample-files/TwitchGen1/TwitchGen1.zip
+- Sample download: https://github.com/4lj4/4lj4.github.io/blob/main/samples/sample-files/TwitchGen1/TwitchGen1.zip
 
 # Required tools:
 - Python
